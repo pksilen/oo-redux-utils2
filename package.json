@@ -1,0 +1,66 @@
+{
+  "name": "oo-redux-utils2",
+  "version": "1.0.0",
+  "description": "Object-oriented Redux utils",
+  "author": {
+    "name": "Petri Silen",
+    "email": "petri.silen@silensoft.com"
+  },
+  "engines": {
+    "node": ">= 18.0"
+  },
+  "license": "MIT",
+  "main": "lib/index.js",
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pksilen/oo-redux-utils2.git"
+  },
+  "bugs": {
+    "url": "https://github.com/pksilen/oo-redux-utils2/issues"
+  },
+  "keywords": [
+    "Redux",
+    "Object-oriented",
+  ],
+  "scripts": {
+    "prebuild": "rimraf lib",
+    "lint": "eslint ./src --cache --fix --ext .ts",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "build": "tsc",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "prepublishOnly": "npm run build"
+  },
+  "devDependencies": {
+    "@types/jest": "^27.0.1",
+    "@types/node": "^16.7.13",
+    "@typescript-eslint/eslint-plugin": "^4.31.0",
+    "@typescript-eslint/parser": "^4.31.0",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.24.2",
+    "jest": "^27.1.1",
+    "prettier": "^2.3.2",
+    "react": "^18.10.0",
+    "rimraf": "^3.0.0",
+    "ts-jest": "^27.0.5",
+    "typescript": "^4.4.2"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": "src",
+    "testRegex": ".spec.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "coverageDirectory": "../coverage",
+    "testEnvironment": "node"
+  }
+}
