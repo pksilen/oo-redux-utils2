@@ -1,5 +1,5 @@
 import AbstractAction from "./AbstractAction";
-import { Dispatch } from "./DispatchUtils";
+import { Dispatch } from "./createActionDispatcher";
 import { ReduxDispatch } from "./ReduxDispatch";
 
 

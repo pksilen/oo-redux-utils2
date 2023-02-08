@@ -1,4 +1,4 @@
-import type { Dispatch } from './DispatchUtils';
+import type { Dispatch } from './createActionDispatcher';
 import AbstractAction from './AbstractAction';
 
 export default abstract class AbstractDispatchingAction<TState, TStateNamespace extends string = ''> extends AbstractAction<TState, TStateNamespace> {
