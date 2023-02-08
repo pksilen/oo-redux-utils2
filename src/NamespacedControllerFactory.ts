@@ -1,16 +1,16 @@
 // @flow
 
-import type { Dispatch } from './Dispatch';
+import type { ReduxDispatch } from './ReduxDispatch';
 import DispatchUtils from './DispatchUtils';
-import type { DispatchAction } from './DispatchUtils';
+import type { Dispatch } from './DispatchUtils';
 import AbstractAction from './AbstractAction';
 
 export default class NamespacedControllerFactory<StateNamespaceType: string> {
-  dispatchAction: DispatchAction;
+  dispatchAction: Dispatch;
 
   stateNamespace: StateNamespaceType;
 
-  constructor(dispatch: Dispatch, stateNamespace: StateNamespaceType) {
+  constructor(dispatch: ReduxDispatch, stateNamespace: StateNamespaceType) {
     this.dispatchAction = DispatchUtils.createActionDispatcher(dispatch);
     this.stateNamespace = stateNamespace;
   }

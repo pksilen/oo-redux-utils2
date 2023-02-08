@@ -1,20 +1,12 @@
-// @flow
-
-import type { DispatchAction } from './DispatchUtils';
+import type { Dispatch } from './DispatchUtils';
 import AbstractAction from './AbstractAction';
 
-export default class AbstractDispatchingAction<
-  StateType,
-  StateNamespaceType: string = ''
-> extends AbstractAction<StateType, StateNamespaceType> {
-  +dispatchAction_: DispatchAction;
-
-  constructor(stateNamespace: StateNamespaceType, dispatchAction: DispatchAction) {
+export default abstract class AbstractDispatchingAction<TState, TStateNamespace extends string = ''> extends AbstractAction<TState, TStateNamespace> {
+  constructor(stateNamespace: TStateNamespace, private readonly dispatch_: Dispatch) {
     super(stateNamespace);
-    this.dispatchAction_ = dispatchAction;
   }
 
-  dispatchAction(action: AbstractAction<StateType, any>) {
-    this.dispatchAction_(action);
+  dispatch(action: AbstractAction<TState, any>): void {
+    this.dispatch_(action);
   }
 }

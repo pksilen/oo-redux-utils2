@@ -1,20 +1,19 @@
-// @flow
+import { ReduxActionObject } from "./ReduxDispatch";
 
-import type { ActionObject } from './Dispatch';
-
-type Reducers<StateNamespacesType: { [string]: string }, StateType> = {
-  [$Keys<StateNamespacesType>]: (StateType | void, ActionObject) => StateType
+type Reducers<TStateNamespaces extends Record<string, string>, TState> = {
+  [K in keyof TStateNamespaces]: (state: TState | undefined, reduxActionObject: ReduxActionObject) => TState;
 };
 
-export default function<StateNamespacesType: { [string]: string }, StateType>(
-  stateNamespaces: StateNamespacesType,
-  createNamespacedStateReducer: ($Keys<StateNamespacesType>) => (StateType | void, ActionObject) => StateType
-): Reducers<StateNamespacesType, StateType> {
-  return Object.keys(stateNamespaces).reduce(
-    (
-      accumulatedReducers: Reducers<StateNamespacesType, StateType>,
-      stateNamespace: $Keys<StateNamespacesType>
-    ) => ({ ...accumulatedReducers, [stateNamespace]: createNamespacedStateReducer(stateNamespace) }),
-    {}
+export function createNamespacedReducers<TStateNamespaces extends Record<string, string>, TState>(
+  stateNamespaces: TStateNamespaces,
+  createNamespacedStateReducer: (
+    key: keyof TStateNamespaces
+  ) => (state: TState | undefined, reduxActionObject: ReduxActionObject) => TState
+): Reducers<TStateNamespaces, TState> {
+  return Object.keys(stateNamespaces).reduce((accumulatedReducers, stateNamespace) => ({
+      ...accumulatedReducers,
+      [stateNamespace]: createNamespacedStateReducer(stateNamespace)
+    }),
+    {} as Reducers<TStateNamespaces, TState>
   );
 }

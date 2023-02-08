@@ -1,24 +1,19 @@
-// @flow
+export default abstract class AbstractAction<TState, TStateNamespace extends string = ''> {
+  private readonly actionClassName: string;
+  private readonly stateNamespace: TStateNamespace;
 
-export default class AbstractAction<StateType, StateNamespaceType: string = ''> {
-  +actionClassName: string;
-
-  +stateNamespace: StateNamespaceType;
-
-  constructor(stateNamespace: StateNamespaceType) {
+  constructor(stateNamespace: TStateNamespace) {
     this.stateNamespace = stateNamespace;
     this.actionClassName = this.constructor.name;
   }
 
-  performAction(
-    action: AbstractAction<StateType, StateNamespaceType>,
-    currentState: StateType
-  ): StateType {
-    return action.performActionAndReturnNewState(currentState);
-  }
+  abstract perform(currentState: TState): TState
 
-  performActionAndReturnNewState(currentState: StateType): StateType {
-    throw new TypeError('Abstract method called');
+  performAction(
+    action: AbstractAction<TState, TStateNamespace>,
+    currentState: TState
+  ): TState {
+    return action.perform(currentState);
   }
 
   getStateNamespace(): string {

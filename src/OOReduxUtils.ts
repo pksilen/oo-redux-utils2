@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import AbstractAction from './AbstractAction';
-import type { ActionObject } from './Dispatch';
+import type { ActionObject } from './ReduxDispatch';
 import AbstractDispatchingAction from './AbstractDispatchingAction';
 
 function createStateReducer<StateType, StateNamespaceType: string>(

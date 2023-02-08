@@ -1,18 +1,12 @@
-// @flow
-
-import * as React from 'react';
 import AbstractAction from './AbstractAction';
-import type { Dispatch } from './Dispatch';
+import type { ReduxDispatch } from './ReduxDispatch';
 
-export type DispatchAction = (AbstractAction<any, any>) => void;
-export type DispatchActionWrapper = {
-  dispatchAction: DispatchAction
-}
+export type Dispatch = (action: AbstractAction<any, any>) => void;
 
 export default class DispatchUtils {
-  static createActionDispatcher(dispatch: Dispatch): DispatchAction {
+  static createActionDispatcher(reduxDispatch: ReduxDispatch): Dispatch {
     return function(action: AbstractAction<any, any>) {
-      dispatch({ type: action });
+      reduxDispatch({ type: action });
     };
   }
 }
