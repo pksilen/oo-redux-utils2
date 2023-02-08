@@ -1,30 +1,24 @@
-// @flow
-
-import * as React from 'react';
 import AbstractAction from './AbstractAction';
-import type { ActionObject } from './ReduxDispatch';
-import AbstractDispatchingAction from './AbstractDispatchingAction';
+import type { ReduxActionObject } from './ReduxDispatch';
 
-function createStateReducer<StateType, StateNamespaceType: string>(
-  initialState: StateType,
-  actionBaseClasses: [Class<AbstractAction<any, any>>, ?Class<AbstractDispatchingAction<any, any>>],
-  stateNamespace: StateNamespaceType
-): (StateType | void, ActionObject) => StateType {
-  return function(currentState: StateType = initialState, action: ActionObject): StateType {
-    return (action.type instanceof actionBaseClasses[0] ||
-      (actionBaseClasses[1] && action.type instanceof actionBaseClasses[1])) &&
-      action.type.getStateNamespace() === stateNamespace
-      ? action.type.performActionAndReturnNewState(currentState)
+function createStateReducer<TState, TStateNamespace extends string>(
+  initialState: TState,
+  actionBaseClass: abstract new(...args: any[]) => AbstractAction<any, any>,
+  stateNamespace: TStateNamespace
+): (state: TState | undefined, reduxAction: ReduxActionObject) => TState {
+  return function(currentState: TState = initialState, reduxAction: ReduxActionObject): TState {
+    return (reduxAction.type instanceof actionBaseClass) &&
+      reduxAction.type.getStateNamespace() === stateNamespace
+      ? reduxAction.type.perform(currentState)
       : currentState;
   };
 }
 
 export default class OOReduxUtils {
-  // noinspection JSUnusedGlobalSymbols
-  static mergeOwnAndForeignState<OwnStateType: Object, ForeignStateType: Object>(
-    ownState: OwnStateType,
-    foreignState: ForeignStateType
-  ): $Exact<{ ...OwnStateType, ...ForeignStateType }> {
+  static mergeOwnAndForeignState<TOwnState extends Record<string, unknown>, TForeignState extends Record<string, unknown>>(
+    ownState: TOwnState,
+    foreignState: TForeignState
+  ): TOwnState & TForeignState {
     const overlappingOwnAndForeignStateKeys = Object.keys(ownState).filter((ownStateKey: string) =>
       Object.keys(foreignState).includes(ownStateKey)
     );
@@ -39,20 +33,18 @@ export default class OOReduxUtils {
     };
   }
 
-  // noinspection JSUnusedGlobalSymbols
-  static createStateReducer<StateType>(
-    initialState: StateType,
-    actionBaseClasses: [Class<AbstractAction<any, any>>, ?Class<AbstractDispatchingAction<any, any>>]
-  ): (StateType | void, ActionObject) => StateType {
+  static createStateReducer<TState>(
+    initialState: TState,
+    actionBaseClasses: abstract new(...args: any[]) => AbstractAction<any, any>
+  ): (state: TState | undefined, reduxAction: ReduxActionObject) => TState {
     return createStateReducer(initialState, actionBaseClasses, '');
   }
 
-  // noinspection JSUnusedGlobalSymbols
-  static createNamespacedStateReducer<StateType, StateNamespaceType: string>(
-    initialState: StateType,
-    actionBaseClasses: [Class<AbstractAction<any, any>>, ?Class<AbstractDispatchingAction<any, any>>],
-    stateNamespace: StateNamespaceType
-  ): (StateType | void, ActionObject) => StateType {
+  static createNamespacedStateReducer<TState, TStateNamespace extends string>(
+    initialState: TState,
+    actionBaseClasses: abstract new(...args: any[]) => AbstractAction<any, any>,
+    stateNamespace: TStateNamespace
+  ): (state: TState | undefined, reduxAction: ReduxActionObject) => TState {
     return createStateReducer(initialState, actionBaseClasses, stateNamespace);
   }
 }

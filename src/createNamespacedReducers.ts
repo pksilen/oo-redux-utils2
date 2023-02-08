@@ -4,7 +4,7 @@ type Reducers<TStateNamespaces extends Record<string, string>, TState> = {
   [K in keyof TStateNamespaces]: (state: TState | undefined, reduxActionObject: ReduxActionObject) => TState;
 };
 
-export function createNamespacedReducers<TStateNamespaces extends Record<string, string>, TState>(
+export default function createNamespacedReducers<TStateNamespaces extends Record<string, string>, TState>(
   stateNamespaces: TStateNamespaces,
   createNamespacedStateReducer: (
     key: keyof TStateNamespaces
