@@ -1,6 +1,6 @@
 export default abstract class AbstractAction<TState, TStateNamespace extends string = ''> {
   private readonly actionClassName: string;
-  private readonly stateNamespace: TStateNamespace;
+  protected readonly stateNamespace: TStateNamespace;
 
   constructor(stateNamespace: TStateNamespace) {
     this.stateNamespace = stateNamespace;
