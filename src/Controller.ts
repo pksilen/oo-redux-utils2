@@ -2,14 +2,10 @@ import AbstractAction from './AbstractAction';
 import { Dispatch } from './createActionDispatcher';
 import { ReduxDispatch } from './ReduxDispatch';
 
-export default abstract class Controller<
-  TStateNamespace extends string = '',
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  TActionDispatchers extends Record<string, Function> = {}
-> {
+export default abstract class Controller<TStateNamespace extends string = ''> {
   protected readonly dispatch: Dispatch;
   // eslint-disable-next-line @typescript-eslint/ban-types
-  private actionDispatchers: TActionDispatchers | undefined;
+  private actionDispatchers: any | undefined;
 
   constructor(reduxDispatch: ReduxDispatch) {
     this.dispatch = (action: AbstractAction<any, TStateNamespace>) => reduxDispatch({ type: action });
@@ -37,7 +33,7 @@ export default abstract class Controller<
   }
 
   // eslint-disable-next-line @typescript-eslint/ban-types
-  protected cachedActionDispatchers(actionDispatchers: TActionDispatchers): TActionDispatchers {
+  protected cachedActionDispatchers<T extends Record<string, Function>>(actionDispatchers: T): T {
     if (!this.actionDispatchers) {
       this.actionDispatchers = actionDispatchers;
     }
