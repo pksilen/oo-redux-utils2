@@ -1,11 +1,15 @@
-import AbstractAction from "./AbstractAction";
-import { Dispatch } from "./createActionDispatcher";
-import { ReduxDispatch } from "./ReduxDispatch";
+import AbstractAction from './AbstractAction';
+import { Dispatch } from './createActionDispatcher';
+import { ReduxDispatch } from './ReduxDispatch';
 
-export default abstract class Controller<TStateNamespace extends string = ''> {
+export default abstract class Controller<
+  TStateNamespace extends string = '',
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  TActionDispatchers extends Record<string, Function> = {}
+> {
   protected readonly dispatch: Dispatch;
   // eslint-disable-next-line @typescript-eslint/ban-types
-  private actionDispatchers: Record<string, Function> | undefined;
+  private actionDispatchers: TActionDispatchers | undefined;
 
   constructor(reduxDispatch: ReduxDispatch) {
     this.dispatch = (action: AbstractAction<any, TStateNamespace>) => reduxDispatch({ type: action });
@@ -27,13 +31,13 @@ export default abstract class Controller<TStateNamespace extends string = ''> {
     diContainer
       .create(ActionClass, {
         dispatchAction: this.dispatch,
-        ...otherArgs
+        ...otherArgs,
       })
       .then((action: any) => this.dispatch(action));
   }
 
   // eslint-disable-next-line @typescript-eslint/ban-types
-  protected cacheActionDispatchers(actionDispatchers: Record<string, Function>): Record<string, Function> {
+  protected cachedActionDispatchers(actionDispatchers: TActionDispatchers): TActionDispatchers {
     if (!this.actionDispatchers) {
       this.actionDispatchers = actionDispatchers;
     }
