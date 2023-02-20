@@ -6,7 +6,7 @@ export default abstract class AbstractDispatchingAction<TState, TStateNamespace 
     super(stateNamespace);
   }
 
-  dispatch(action: AbstractAction<TState, any>): void {
+  dispatch(action: AbstractAction<any, any>): void {
     this.dispatch_(action);
   }
 
