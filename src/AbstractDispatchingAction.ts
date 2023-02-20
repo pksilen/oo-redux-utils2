@@ -10,6 +10,10 @@ export default abstract class AbstractDispatchingAction<TState, TStateNamespace 
     this.dispatch_(action);
   }
 
+  dispatchAfterThis(action: AbstractAction<any, any>): void {
+    setTimeout(() => this.dispatch_(action), 0);
+  }
+
   dispatchWithDi(
     ActionClass: abstract new (...args: any[]) => AbstractAction<any, TStateNamespace>,
     diContainer: { create: (...args: any[]) => Promise<any> },
