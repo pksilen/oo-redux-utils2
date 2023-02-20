@@ -9,4 +9,17 @@ export default abstract class AbstractDispatchingAction<TState, TStateNamespace 
   dispatch(action: AbstractAction<TState, any>): void {
     this.dispatch_(action);
   }
+
+  dispatchWithDi(
+    ActionClass: abstract new (...args: any[]) => AbstractAction<any, TStateNamespace>,
+    diContainer: { create: (...args: any[]) => Promise<any> },
+    otherArgs: Record<string, unknown>
+  ): void {
+    diContainer
+      .create(ActionClass, {
+        ...otherArgs,
+      })
+      .then((action: any) => this.dispatch(action));
+  }
+
 }

@@ -18,7 +18,6 @@ export default abstract class Controller<TStateNamespace extends string = ''> {
   ): void {
     diContainer
       .create(ActionClass, {
-        dispatchAction: this.dispatch,
         ...otherArgs,
       })
       .then((action: any) => this.dispatch(action));
