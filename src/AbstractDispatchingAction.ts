@@ -15,7 +15,7 @@ export default abstract class AbstractDispatchingAction<TState, TStateNamespace 
   }
 
   dispatchWithDi(
-    ActionClass: abstract new (...args: any[]) => AbstractAction<any, TStateNamespace>,
+    ActionClass: abstract new (...args: any[]) => AbstractAction<any, any>,
     diContainer: { create: (...args: any[]) => Promise<any> },
     otherArgs: Record<string, unknown>
   ): void {
@@ -24,6 +24,12 @@ export default abstract class AbstractDispatchingAction<TState, TStateNamespace 
         ...otherArgs,
       })
       .then((action: any) => this.dispatch(action));
+  }
+
+  dispatchAfterThisWithDi(ActionClass: abstract new (...args: any[]) => AbstractAction<any, any>,
+                          diContainer: { create: (...args: any[]) => Promise<any> },
+                          otherArgs: Record<string, unknown>): void {
+    setTimeout(() => this.dispatchWithDi(ActionClass, diContainer, otherArgs), 0);
   }
 
 }
